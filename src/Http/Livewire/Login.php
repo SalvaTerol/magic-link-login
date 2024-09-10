@@ -2,7 +2,6 @@
 
 namespace SalvaTerol\MagicLinkLogin\Http\Livewire;
 
-use App\Mail\LoginMagicLink;
 use Filament\Actions\Action;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
@@ -10,24 +9,18 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 use Livewire\Component;
 use SalvaTerol\MagicLinkLogin\Facades\MagicLinkLogin;
-use SalvaTerol\MagicLinkLogin\Models\MagicLink;
 
-class Login extends Component implements HasForms, HasActions
+class Login extends Component implements HasActions, HasForms
 {
-    use InteractsWithForms;
     use InteractsWithActions;
-
+    use InteractsWithForms;
 
     public function magicLinkModalAction(): Action
     {
-        return Action::make('magicLinkModal')->label('Acceder con el mail')->icon('heroicon-o-envelope')->extraAttributes(['class' => "w-full"])
+        return Action::make('magicLinkModal')->label('Acceder con el mail')->icon('heroicon-o-envelope')->extraAttributes(['class' => 'w-full'])
             ->form([
                 Section::make()->schema([
                     TextInput::make('email')
@@ -41,17 +34,16 @@ class Login extends Component implements HasForms, HasActions
     public function authGithubAction(): Action
     {
         return Action::make('authGithub')->label('Acceder con Github')->icon('github')
-            ->extraAttributes(['class' => "w-full"])
+            ->extraAttributes(['class' => 'w-full'])
             ->action(fn () => Socialite::driver('github')->redirect());
     }
 
     public function authTwitterAction(): Action
     {
         return Action::make('authTwitter')->label('Acceder con Twitter')->icon('twitter')
-            ->extraAttributes(['class' => "w-full"])
+            ->extraAttributes(['class' => 'w-full'])
             ->action(fn () => redirect()->route('auth.redirect', ['service' => 'twitter']));
     }
-
 
     public function render()
     {

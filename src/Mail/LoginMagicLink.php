@@ -13,7 +13,7 @@ class LoginMagicLink extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public function __construct( public string $loginUrl) {}
+    public function __construct(public string $loginUrl) {}
 
     /**
      * Get the message envelope.

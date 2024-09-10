@@ -17,7 +17,7 @@ class TestCase extends Orchestra
             fn (string $modelName) => 'SalvaTerol\\MagicLinkLogin\\Database\\Factories\\'.class_basename($modelName).'Factory'
         );
 
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
         $this->artisan('migrate', ['--database' => 'testing'])->run();
     }
