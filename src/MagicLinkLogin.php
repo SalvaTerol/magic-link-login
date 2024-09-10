@@ -31,7 +31,7 @@ class MagicLinkLogin
         $loginUrl = URL::temporarySignedRoute(
             'login.token',
             now()->addMinutes(config('magic-link-login.token_expiry_minutes', 30)),
-            ['token' => $magicLink->token]
+            ['token' => urlencode($magicLink->token)]
         );
 
         $mailClass = config('magic-link-login.mail_class', \SalvaTerol\MagicLinkLogin\Mail\LoginMagicLink::class);
