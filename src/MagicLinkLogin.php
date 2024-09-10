@@ -4,7 +4,6 @@ namespace SalvaTerol\MagicLinkLogin;
 
 use Exception;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
@@ -16,36 +15,36 @@ class MagicLinkLogin
     /**
      * Genera un enlace mágico para el usuario con el correo electrónico proporcionado.
      */
-    public function generateMagicLink(string $email): ?string
+    public function generateMagicLink(string $email): bool
     {
-        $userModel = config(key: 'magic-link-login.user_model', default: \App\Models\User::class);
-        $user = $userModel::firstOrCreate(['email' => $email]);
-        $token = (string) Str::uuid();
+        try {
+            $userModel = config('magic-link-login.user_model', \App\Models\User::class);
+            $user = $userModel::firstOrCreate(['email' => $email]);
 
-        $magicLink = MagicLink::create([
-            'user_id' => $user->id,
-            'token' => $token,
-            'expires_at' => now()->addMinutes(config(key: 'magic-link-login.token_expiry_minutes', default: 30)),
-        ]);
+            $token = (string) Str::uuid();
 
-        $loginUrl = URL::temporarySignedRoute(
-            'login.token',
-            now()->addMinutes(config('magic-link-login.token_expiry_minutes', 30)),
-            ['token' => $magicLink->token]
-        );
+            $magicLink = MagicLink::create([
+                'user_id' => $user->id,
+                'token' => $token,
+                'expires_at' => now()->addMinutes(config('magic-link-login.token_expiry_minutes', 30)),
+            ]);
 
-        $mailClass = config('magic-link-login.mail_class', \SalvaTerol\MagicLinkLogin\Mail\LoginMagicLink::class);
-        Mail::to($user->email)->send(new $mailClass($loginUrl));
+            $loginUrl = URL::temporarySignedRoute(
+                'login.token',
+                now()->addMinutes(config('magic-link-login.token_expiry_minutes', 30)),
+                ['token' => $magicLink->token]
+            );
 
-        return $loginUrl;
+            $mailClass = config('magic-link-login.mail_class', \SalvaTerol\MagicLinkLogin\Mail\LoginMagicLink::class);
 
-        /*        try {
+            Mail::to($user->email)->send(new $mailClass($loginUrl));
 
+            return true;
+        } catch (Exception $e) {
+            report($e);
 
-                } catch (Exception $e) {
-                    report($e);
-                    throw new Exception('No se pudo generar el enlace mágico. Por favor, intenta nuevamente.');
-                }*/
+            return false;
+        }
     }
 
     /**

@@ -9,6 +9,7 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Notifications\Notification;
 use Livewire\Component;
 use SalvaTerol\MagicLinkLogin\Facades\MagicLinkLogin;
 
@@ -26,7 +27,15 @@ class Login extends Component implements HasActions, HasForms
                         ->required()->email()->label('Email'),
                 ])->label('Send Magic Link'),
             ])->action(function (array $data) {
-                MagicLinkLogin::generateMagicLink($data['email']);
+                $magicLinkLogin = MagicLinkLogin::generateMagicLink($data['email']);
+                if ($magicLinkLogin) {
+                    Notification::make()->title('Magic Link enviado')->color('success')->seconds(5)
+                        ->body('Revisa tu correo electrónico para acceder a tu cuenta.')->send();
+                } else {
+                    Notification::make()->title('Error al enviar el enlace mágico')->color('error')->seconds(5)
+                        ->body('Ha ocurrido un error, vuelva a intentarlo más tarde.')->send();
+
+                }
             });
     }
 
