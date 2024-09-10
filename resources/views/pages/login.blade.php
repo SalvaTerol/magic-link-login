@@ -27,7 +27,7 @@
                 </div>
             @endif
 
-            <div class="mt-8 space-y-6">
+            <div class="space-y-6">
                 <livewire:magic-link-login::login/>
             </div>
         </div>

@@ -33,4 +33,9 @@ class AuthController extends Controller
 
         return redirect()->intended(config('magic-link-login.redirect_after_login', '/'));
     }
+
+    public function redirectToProvider($service)
+    {
+        return MagicLinkLogin::redirectToProvider($service);
+    }
 }

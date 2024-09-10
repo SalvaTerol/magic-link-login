@@ -93,4 +93,9 @@ class MagicLinkLogin
 
         return $user;
     }
+
+    public function redirectToProvider(string $service)
+    {
+        return Socialite::driver($service)->redirect();
+    }
 }
