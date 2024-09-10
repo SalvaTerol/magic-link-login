@@ -39,13 +39,13 @@ class MagicLinkLogin
 
         return $loginUrl;
 
-/*        try {
+        /*        try {
 
 
-        } catch (Exception $e) {
-            report($e);
-            throw new Exception('No se pudo generar el enlace mágico. Por favor, intenta nuevamente.');
-        }*/
+                } catch (Exception $e) {
+                    report($e);
+                    throw new Exception('No se pudo generar el enlace mágico. Por favor, intenta nuevamente.');
+                }*/
     }
 
     /**
