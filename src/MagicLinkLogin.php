@@ -18,32 +18,34 @@ class MagicLinkLogin
      */
     public function generateMagicLink(string $email): ?string
     {
-        try {
-            $userModel = config(key: 'magic-link-login.user_model', default: \App\Models\User::class);
-            $user = $userModel::firstOrCreate(['email' => $email]);
-            $token = (string) Str::uuid();
+        $userModel = config(key: 'magic-link-login.user_model', default: \App\Models\User::class);
+        $user = $userModel::firstOrCreate(['email' => $email]);
+        $token = (string) Str::uuid();
 
-            $magicLink = MagicLink::create([
-                'user_id' => $user->id,
-                'token' => Hash::make($token),
-                'expires_at' => now()->addMinutes(config(key: 'magic-link-login.token_expiry_minutes', default: 30)),
-            ]);
+        $magicLink = MagicLink::create([
+            'user_id' => $user->id,
+            'token' => Hash::make($token),
+            'expires_at' => now()->addMinutes(config(key: 'magic-link-login.token_expiry_minutes', default: 30)),
+        ]);
 
-            $loginUrl = URL::temporarySignedRoute(
-                'login.token',
-                now()->addMinutes(config('magic-link-login.token_expiry_minutes', 30)),
-                ['token' => $token]
-            );
+        $loginUrl = URL::temporarySignedRoute(
+            'login.token',
+            now()->addMinutes(config('magic-link-login.token_expiry_minutes', 30)),
+            ['token' => $token]
+        );
 
-            $mailClass = config('magic-link-login.mail_class', \SalvaTerol\MagicLinkLogin\Mail\LoginMagicLink::class);
-            Mail::to($user->email)->send(new $mailClass($loginUrl));
+        $mailClass = config('magic-link-login.mail_class', \SalvaTerol\MagicLinkLogin\Mail\LoginMagicLink::class);
+        Mail::to($user->email)->send(new $mailClass($loginUrl));
 
-            return $loginUrl;
+        return $loginUrl;
+
+/*        try {
+
 
         } catch (Exception $e) {
             report($e);
             throw new Exception('No se pudo generar el enlace mágico. Por favor, intenta nuevamente.');
-        }
+        }*/
     }
 
     /**
