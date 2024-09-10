@@ -4,7 +4,6 @@ namespace SalvaTerol\MagicLinkLogin;
 
 use Exception;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
