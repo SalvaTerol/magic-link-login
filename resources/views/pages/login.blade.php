@@ -7,7 +7,7 @@
                 </h2>
             </div>
 
-            @if ($error)
+            @isset($error)
                 <div class="rounded-md bg-red-50 p-4">
                     <div class="flex">
                         <div class="flex-shrink-0">
@@ -28,7 +28,7 @@
             @endif
 
             <div class="mt-8 space-y-6">
-                <livewire:login/>
+                <livewire:magic-link-login::login/>
             </div>
         </div>
     </div>
