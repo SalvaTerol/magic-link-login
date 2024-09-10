@@ -24,14 +24,14 @@ class MagicLinkLogin
 
         $magicLink = MagicLink::create([
             'user_id' => $user->id,
-            'token' => Hash::make($token),
+            'token' => $token,
             'expires_at' => now()->addMinutes(config(key: 'magic-link-login.token_expiry_minutes', default: 30)),
         ]);
 
         $loginUrl = URL::temporarySignedRoute(
             'login.token',
             now()->addMinutes(config('magic-link-login.token_expiry_minutes', 30)),
-            ['token' => urlencode($magicLink->token)]
+            ['token' => $magicLink->token]
         );
 
         $mailClass = config('magic-link-login.mail_class', \SalvaTerol\MagicLinkLogin\Mail\LoginMagicLink::class);
@@ -55,7 +55,7 @@ class MagicLinkLogin
     {
         return MagicLink::where('expires_at', '>', now())
             ->where(function ($query) use ($token) {
-                $query->where('token', Hash::check($token, 'token'));
+                $query->where('token', $token);
             })
             ->first();
     }
