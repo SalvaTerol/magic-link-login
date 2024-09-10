@@ -2,21 +2,16 @@
 
 namespace SalvaTerol\MagicLinkLogin\Controllers;
 
-use App\Models\MagicLink;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Hash;
-use Laravel\Socialite\Facades\Socialite;
 use SalvaTerol\MagicLinkLogin\Facades\MagicLinkLogin;
 
 class AuthController extends Controller
 {
-
     public function handleProviderCallback($service)
     {
         $user = MagicLinkLogin::handleProviderCallback($service);
 
-        if (!$user) {
+        if (! $user) {
             return redirect()->route('login')->with('error', 'Error al obtener los datos del proveedor de autenticación.');
         }
 
@@ -29,7 +24,7 @@ class AuthController extends Controller
     {
         $magicLink = MagicLinkLogin::validateToken($token);
 
-        if (!$magicLink) {
+        if (! $magicLink) {
             return redirect()->route('login')->with('error', 'El enlace de acceso no es válido o ha expirado.');
         }
 
