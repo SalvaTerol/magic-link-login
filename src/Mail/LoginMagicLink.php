@@ -31,7 +31,7 @@ class LoginMagicLink extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'mail.login',
+            markdown: 'magic-link-login::mail.login',
             with: [
                 'loginUrl' => $this->loginUrl,
             ],

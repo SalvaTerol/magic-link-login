@@ -47,6 +47,6 @@ class Login extends Component implements HasActions, HasForms
 
     public function render()
     {
-        return view('livewire.login');
+        return view('magic-link-login::livewire.login');
     }
 }

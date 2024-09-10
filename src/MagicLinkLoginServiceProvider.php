@@ -19,8 +19,6 @@ class MagicLinkLoginServiceProvider extends PackageServiceProvider
             ->hasConfigFile()
             ->hasRoute('web')
             ->hasMigration('create_magic_link_login_table')
-            ->hasViews('magic-link-login::pages.login')
-            ->hasViews('magic-link-login::mail.login')
             ->hasCommand(MagicLinkLoginCommand::class)
             ->hasInstallCommand(function (InstallCommand $command) {
                 $command
