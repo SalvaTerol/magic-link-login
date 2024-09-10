@@ -35,14 +35,14 @@ class Login extends Component implements HasActions, HasForms
     {
         return Action::make('authGithub')->label('Acceder con Github')->icon('github')
             ->extraAttributes(['class' => 'w-full'])
-            ->action(fn () => Socialite::driver('github')->redirect());
+            ->action(fn () => dd(Socialite::driver('github')->redirect()));
     }
 
     public function authTwitterAction(): Action
     {
         return Action::make('authTwitter')->label('Acceder con Twitter')->icon('twitter')
             ->extraAttributes(['class' => 'w-full'])
-            ->action(fn () => redirect()->route('auth.redirect', ['service' => 'twitter']));
+            ->action(fn () => Socialite::driver('twitter')->redirect());
     }
 
     public function render()

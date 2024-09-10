@@ -31,7 +31,7 @@ class MagicLinkLoginServiceProvider extends PackageServiceProvider
 
     public function packageBooted()
     {
-        Livewire::component('login', Login::class);
+        Livewire::component('magic-link-login::login', Login::class);
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'magic-link-login');
     }
 }
