@@ -3,11 +3,11 @@
 namespace SalvaTerol\MagicLinkLogin;
 
 use Livewire\Livewire;
+use SalvaTerol\MagicLinkLogin\Commands\MagicLinkLoginCommand;
 use SalvaTerol\MagicLinkLogin\Http\Livewire\Login;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use SalvaTerol\MagicLinkLogin\Commands\MagicLinkLoginCommand;
 
 class MagicLinkLoginServiceProvider extends PackageServiceProvider
 {
@@ -19,7 +19,7 @@ class MagicLinkLoginServiceProvider extends PackageServiceProvider
             ->hasRoute('web')
             ->hasMigration('create_magic_link_login_table')
             ->hasCommand(MagicLinkLoginCommand::class)
-            ->hasInstallCommand(function(InstallCommand $command) {
+            ->hasInstallCommand(function (InstallCommand $command) {
                 $command
                     ->publishConfigFile()
                     ->publishAssets()
