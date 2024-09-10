@@ -14,7 +14,7 @@ Puedes instalar el package mediante Composer:
 
 ```bash
 composer require salvaterol/magic-link-login
-
+```
 
 ### Publicación de Archivos
 
@@ -118,16 +118,3 @@ vendor/bin/pest
 
 Este package está bajo la licencia MIT. Para más detalles, consulta el archivo `LICENSE.md`.
 ```
-
-### Explicación de las Secciones:
-
-1. **Requisitos**: Define claramente las versiones mínimas de PHP y Laravel.
-2. **Instalación**: Instrucciones para instalar el package, publicar los archivos necesarios y ejecutar las migraciones.
-3. **Configuración**: Describe cómo configurar el package, incluyendo el tiempo de expiración de los enlaces mágicos y la redirección post-login.
-4. **Uso**: Ejemplos claros de cómo usar las características principales del package, como generar enlaces mágicos y autenticarse con proveedores externos.
-5. **Limpieza de Enlaces Expirados**: Instrucciones para ejecutar el comando de limpieza manualmente o programarlo en el scheduler.
-6. **Tests**: Instrucciones para ejecutar las pruebas.
-7. **Contribuciones**: Invitación a colaborar en el proyecto.
-8. **Licencia**: Información sobre la licencia del package.
-
-Este README debería ser claro y suficiente para guiar a los usuarios en la instalación y el uso de tu package de Laravel.
