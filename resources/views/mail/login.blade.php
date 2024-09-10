@@ -1,21 +1,20 @@
 <x-mail::message>
-    # Inicia sesión en {{ config('app.name') }}
+# Inicia sesión en {{ config('app.name') }}
 
-    <x-mail::panel>
-    Has solicitado un enlace de inicio de sesión para tu cuenta en {{ config('app.name') }}. Haz clic en el botón de
-    abajo para iniciar sesión:
+<x-mail::panel>
+Has solicitado un enlace de inicio de sesión para tu cuenta en {{ config('app.name') }}. Haz clic en el botón de abajo para iniciar sesión:
 
-    <x-mail::button :url="$loginUrl">
-        Iniciar sesión
-    </x-mail::button>
+<x-mail::button :url="$loginUrl">
+Iniciar sesión
+</x-mail::button>
 
-    Este enlace es válido por 30 minutos y solo se puede usar una vez.
+Este enlace es válido por 30 minutos y solo se puede usar una vez.
 
-    Si no solicitaste este enlace, puedes ignorar este correo electrónico de forma segura.
+Si no solicitaste este enlace, puedes ignorar este correo electrónico de forma segura.
 
-    Gracias,<br>
-    {{ config('app.name') }}
-    </x-mail::panel>
+Gracias,<br>
+{{ config('app.name') }}
+</x-mail::panel>
 
-    Si tienes problemas para hacer clic en el botón "Iniciar sesión", copia y pega la siguiente URL en tu navegador web: {{ $loginUrl }}
+Si tienes problemas para hacer clic en el botón "Iniciar sesión", copia y pega la siguiente URL en tu navegador web: {{ $loginUrl }}
 </x-mail::message>
