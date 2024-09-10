@@ -9,7 +9,6 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Laravel\Socialite\Facades\Socialite;
 use Livewire\Component;
 use SalvaTerol\MagicLinkLogin\Facades\MagicLinkLogin;
 
