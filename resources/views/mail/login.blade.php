@@ -1,7 +1,9 @@
 <x-mail::message>
     # Inicia sesión en {{ config('app.name') }}
 
-    Has solicitado un enlace de inicio de sesión para tu cuenta en {{ config('app.name') }}. Haz clic en el botón de abajo para iniciar sesión:
+    <x-mail::panel>
+    Has solicitado un enlace de inicio de sesión para tu cuenta en {{ config('app.name') }}. Haz clic en el botón de
+    abajo para iniciar sesión:
 
     <x-mail::button :url="$loginUrl">
         Iniciar sesión
@@ -13,6 +15,7 @@
 
     Gracias,<br>
     {{ config('app.name') }}
+    </x-mail::panel>
 
-    Si tienes problemas para hacer clic en el botón "Iniciar sesión", copia y pega la siguiente URL en tu navegador web: [{{ $loginUrl }}]({{ $loginUrl }})
+    Si tienes problemas para hacer clic en el botón "Iniciar sesión", copia y pega la siguiente URL en tu navegador web: {{ $loginUrl }}
 </x-mail::message>
