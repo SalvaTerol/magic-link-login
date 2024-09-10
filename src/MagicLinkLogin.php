@@ -4,21 +4,17 @@ namespace SalvaTerol\MagicLinkLogin;
 
 use Exception;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
-use SalvaTerol\MagicLinkLogin\Mail\LoginMagicLink;
 use SalvaTerol\MagicLinkLogin\Models\MagicLink;
 
 class MagicLinkLogin
 {
     /**
      * Genera un enlace mágico para el usuario con el correo electrónico proporcionado.
-     *
-     * @param string $email
-     * @return string|null
      */
     public function generateMagicLink(string $email): ?string
     {
@@ -52,9 +48,6 @@ class MagicLinkLogin
 
     /**
      * Valida si un token proporcionado es válido.
-     *
-     * @param  string  $token
-     * @return MagicLink|null
      */
     public function validateToken(string $token): ?MagicLink
     {
@@ -69,7 +62,7 @@ class MagicLinkLogin
     {
         $userData = Socialite::driver($service)->user();
 
-        if (!$userData || !$userData->email) {
+        if (! $userData || ! $userData->email) {
             return false;
         }
 
@@ -80,7 +73,7 @@ class MagicLinkLogin
                 ->where('provider_id', $userData->id);
         })->first();
 
-        if (!$user) {
+        if (! $user) {
             $user = $userModel::firstOrCreate(
                 ['email' => $userData->email],
                 [
@@ -97,7 +90,6 @@ class MagicLinkLogin
 
             event(new Registered($user));
         }
-
 
         return $user;
     }

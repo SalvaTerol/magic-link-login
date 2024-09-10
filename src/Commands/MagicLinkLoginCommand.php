@@ -8,8 +8,8 @@ use SalvaTerol\MagicLinkLogin\Jobs\CleanupExpiredMagicLinks;
 class MagicLinkLoginCommand extends Command
 {
     protected $signature = 'magic-links:cleanup';
-    protected $description = 'Eliminar enlaces mágicos expirados de la base de datos';
 
+    protected $description = 'Eliminar enlaces mágicos expirados de la base de datos';
 
     public function handle()
     {
