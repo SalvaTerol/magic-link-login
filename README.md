@@ -1,93 +1,135 @@
-# :package_description
+A continuación te dejo un ejemplo completo de un archivo `README.md` para tu package de Laravel con integración de enlaces mágicos y el comando de limpieza que acabamos de implementar. Este README cubre la instalación, configuración, uso del comando y cualquier otra información útil para los usuarios.
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/:vendor_slug/:package_slug.svg?style=flat-square)](https://packagist.org/packages/:vendor_slug/:package_slug)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/:vendor_slug/:package_slug/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/:vendor_slug/:package_slug/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/:vendor_slug/:package_slug/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/:vendor_slug/:package_slug/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/:vendor_slug/:package_slug.svg?style=flat-square)](https://packagist.org/packages/:vendor_slug/:package_slug)
-<!--delete-->
----
-This repo can be used to scaffold a Laravel package. Follow these steps to get started:
+```markdown
+# Magic Link Login
 
-1. Press the "Use this template" button at the top of this repo to create a new repo with the contents of this skeleton.
-2. Run "php ./configure.php" to run a script that will replace all placeholders throughout all the files.
-3. Have fun creating your package.
-4. If you need help creating a package, consider picking up our <a href="https://laravelpackage.training">Laravel Package Training</a> video course.
----
-<!--/delete-->
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+**Magic Link Login** es un package de autenticación para Laravel que permite a los usuarios iniciar sesión en tu aplicación utilizando enlaces mágicos enviados por correo electrónico o proveedores externos como Google, Facebook, etc.
 
-## Support us
+## Requisitos
 
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/:package_name.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/:package_name)
+- PHP 8.2 o superior
+- Laravel 10.x o 11.x
 
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
+## Instalación
 
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
-
-## Installation
-
-You can install the package via composer:
+Puedes instalar el package mediante Composer:
 
 ```bash
-composer require :vendor_slug/:package_slug
+composer require salvaterol/magic-link-login
 ```
 
-You can publish and run the migrations with:
+### Publicación de Archivos
+
+Después de instalar el package, debes publicar el archivo de configuración y las migraciones:
 
 ```bash
-php artisan vendor:publish --tag=":package_slug-migrations"
+php artisan vendor:publish --provider="SalvaTerol\MagicLinkLogin\MagicLinkLoginServiceProvider" --tag="config"
+php artisan vendor:publish --provider="SalvaTerol\MagicLinkLogin\MagicLinkLoginServiceProvider" --tag="migrations"
+```
+
+Luego, ejecuta las migraciones:
+
+```bash
 php artisan migrate
 ```
 
-You can publish the config file with:
+## Configuración
 
-```bash
-php artisan vendor:publish --tag=":package_slug-config"
-```
-
-This is the contents of the published config file:
+En el archivo de configuración `config/magic-link-login.php`, puedes personalizar varios aspectos del comportamiento de los enlaces mágicos:
 
 ```php
 return [
+    'user_model' => \App\Models\User::class,  // Modelo de usuario
+    'token_expiry_minutes' => 15,             // Tiempo de expiración de los enlaces mágicos
+    'redirect_after_login' => '/',            // Redirección después del login exitoso
+    'max_attempts' => 3,                      // Intentos máximos para usar un token (si es aplicable)
 ];
 ```
 
-Optionally, you can publish the views using
+## Uso
 
-```bash
-php artisan vendor:publish --tag=":package_slug-views"
-```
+### Generar Enlace Mágico
 
-## Usage
+Para enviar un enlace mágico al correo electrónico de un usuario, puedes hacer lo siguiente:
 
 ```php
-$variable = new VendorName\Skeleton();
-echo $variable->echoPhrase('Hello, VendorName!');
+use SalvaTerol\MagicLinkLogin\Facades\MagicLinkLogin;
+
+MagicLinkLogin::sendMagicLink($user);
 ```
 
-## Testing
+El enlace mágico será enviado al correo electrónico del usuario y, cuando lo use, podrá iniciar sesión sin necesidad de ingresar una contraseña.
+
+### Autenticación con Proveedores Externos
+
+También puedes permitir que los usuarios se autentiquen mediante proveedores externos como Google o Facebook. Para esto, el package utiliza [Laravel Socialite](https://github.com/laravel/socialite).
+
+Configura los proveedores en tu archivo `.env`:
+
+```dotenv
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+FACEBOOK_CLIENT_ID=your-facebook-client-id
+FACEBOOK_CLIENT_SECRET=your-facebook-client-secret
+```
+
+Después de configurar los proveedores, puedes redirigir a los usuarios a la página de autenticación con el siguiente código:
+
+```php
+return Socialite::driver('google')->redirect();
+```
+
+### Limpieza de Enlaces Mágicos Expirados
+
+Este package incluye un comando para eliminar automáticamente los enlaces mágicos expirados de la base de datos.
+
+#### Ejecutar Manualmente
+
+Puedes ejecutar el comando manualmente con:
 
 ```bash
-composer test
+php artisan magic-links:cleanup
 ```
 
-## Changelog
+#### Configuración del Scheduler
 
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
+Si deseas que este comando se ejecute automáticamente en tu aplicación, puedes añadirlo al **scheduler** de Laravel. Abre el archivo `app/Console/Kernel.php` de tu aplicación Laravel y añade la siguiente línea en el método `schedule`:
 
-## Contributing
+```php
+protected function schedule(Schedule $schedule)
+{
+    $schedule->command('magic-links:cleanup')->weekly();
+}
+```
 
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+Esto hará que el comando se ejecute automáticamente una vez a la semana.
 
-## Security Vulnerabilities
+## Tests
 
-Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
+El package incluye pruebas básicas para garantizar su correcto funcionamiento. Puedes ejecutar las pruebas utilizando:
 
-## Credits
+```bash
+vendor/bin/pest
+```
 
-- [:author_name](https://github.com/:author_username)
-- [All Contributors](../../contributors)
+## Contribuciones
 
-## License
+¡Las contribuciones son bienvenidas! Si encuentras algún problema o tienes sugerencias, siéntete libre de abrir un _issue_ o enviar un _pull request_.
 
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+## Licencia
+
+Este package está bajo la licencia MIT. Para más detalles, consulta el archivo `LICENSE.md`.
+```
+
+### Explicación de las Secciones:
+
+1. **Requisitos**: Define claramente las versiones mínimas de PHP y Laravel.
+2. **Instalación**: Instrucciones para instalar el package, publicar los archivos necesarios y ejecutar las migraciones.
+3. **Configuración**: Describe cómo configurar el package, incluyendo el tiempo de expiración de los enlaces mágicos y la redirección post-login.
+4. **Uso**: Ejemplos claros de cómo usar las características principales del package, como generar enlaces mágicos y autenticarse con proveedores externos.
+5. **Limpieza de Enlaces Expirados**: Instrucciones para ejecutar el comando de limpieza manualmente o programarlo en el scheduler.
+6. **Tests**: Instrucciones para ejecutar las pruebas.
+7. **Contribuciones**: Invitación a colaborar en el proyecto.
+8. **Licencia**: Información sobre la licencia del package.
+
+Este README debería ser claro y suficiente para guiar a los usuarios en la instalación y el uso de tu package de Laravel.
