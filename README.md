@@ -1,6 +1,4 @@
-A continuación te dejo un ejemplo completo de un archivo `README.md` para tu package de Laravel con integración de enlaces mágicos y el comando de limpieza que acabamos de implementar. Este README cubre la instalación, configuración, uso del comando y cualquier otra información útil para los usuarios.
 
-```markdown
 # Magic Link Login
 
 **Magic Link Login** es un package de autenticación para Laravel que permite a los usuarios iniciar sesión en tu aplicación utilizando enlaces mágicos enviados por correo electrónico o proveedores externos como Google, Facebook, etc.
@@ -16,7 +14,7 @@ Puedes instalar el package mediante Composer:
 
 ```bash
 composer require salvaterol/magic-link-login
-```
+
 
 ### Publicación de Archivos
 
